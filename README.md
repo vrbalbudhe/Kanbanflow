@@ -51,27 +51,6 @@ Whether you're managing personal tasks, team projects, or complex workflows, Kan
 
 ---
 
-
-## 🤝 Contributing
-
-We love contributions! Here's how you can help make KanbanFlow even better:
-
-### Development Process
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Contribution Guidelines
-
-- Follow the existing code style and conventions
-- Write clear, concise commit messages
-- Add tests for new features and bug fixes
-- Update documentation as needed
-- Ensure all tests pass before submitting
-
 ## 📋 Roadmap
 
 ### Future Considerations
@@ -90,7 +69,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ```
 MIT License
 
-Copyright (c) 2024 Vrbal Budhe
+Copyright (c) 2024 VarunBalbudhe
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -101,32 +80,6 @@ furnished to do so, subject to the following conditions:
 
 [Full license text...]
 ```
-
----
-
-## 🙏 Acknowledgments
-
-- **Contributors** - Thank you to all the amazing people who have contributed to this project
-- **Open Source Community** - Built with incredible open-source tools and libraries
-- **Design Inspiration** - Inspired by Trello, Notion, and other great productivity tools
-- **Feedback** - Special thanks to our beta testers and early adopters
-
----
-
-## 💬 Support & Community
-
-### Get Help
-
-- 📖 **Documentation**: [Full documentation](docs/)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/vrbalbudhe/Kanbanflow/discussions)
-- 🐛 **Issues**: [Report bugs](https://github.com/vrbalbudhe/Kanbanflow/issues)
-- 📧 **Email**: support@kanbanflow.dev
-
-### Stay Connected
-
-- 🐦 **Twitter**: [@KanbanFlow](https://twitter.com/kanbanflow)
-- 💼 **LinkedIn**: [KanbanFlow](https://linkedin.com/company/kanbanflow)
-- 📱 **Discord**: [Join our community](https://discord.gg/kanbanflow)
 
 ---
 
