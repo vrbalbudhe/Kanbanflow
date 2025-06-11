@@ -14,7 +14,7 @@ export const addTask = createAsyncThunk(
      "task/addTask",
      async ({ title, description, priority, columnId, boardId, assigneeId, tags }, thunkAPI) => {
           try {
-               const response = await axios.post(`http://localhost:8000/api/task/add`, {
+               const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/task/add`, {
                     title,
                     description,
                     priority: priority.toLowerCase(),
@@ -36,7 +36,7 @@ export const fetchTasks = createAsyncThunk(
      "task/fetchTasks",
      async (columnId, thunkAPI) => {
           try {
-               const response = await axios.get(`http://localhost:8000/api/task/getAll/${columnId}`, { withCredentials: true });
+               const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/task/getAll/${columnId}`, { withCredentials: true });
                return { columnId, tasks: response.data.tasks };
           } catch (error) {
                const errorMessage = error.response?.data?.message || error.message || "Failed to fetch tasks";
@@ -50,7 +50,7 @@ export const fetchAllTasksForBoard = createAsyncThunk(
      "task/fetchAllTasksForBoard",
      async (boardId, thunkAPI) => {
           try {
-               const response = await axios.get(`http://localhost:8000/api/task/board/${boardId}`, { withCredentials: true });
+               const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/task/board/${boardId}`, { withCredentials: true });
                return response.data.tasks;
           } catch (error) {
                const errorMessage = error.response?.data?.message || error.message || "Failed to fetch board tasks";
@@ -64,7 +64,7 @@ export const updateTask = createAsyncThunk(
      "task/updateTask",
      async ({ taskId, updates }, thunkAPI) => {
           try {
-               const response = await axios.post(`http://localhost:8000/api/task/update/${taskId}`, updates, { withCredentials: true });
+               const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/task/update/${taskId}`, updates, { withCredentials: true });
                return response.data.task;
           } catch (error) {
                const errorMessage = error.response?.data?.message || error.message || "Failed to update task";
@@ -78,7 +78,7 @@ export const deleteTask = createAsyncThunk(
      "task/deleteTask",
      async (taskId, thunkAPI) => {
           try {
-               await axios.delete(`http://localhost:8000/api/task/del/${taskId}`, { withCredentials: true });
+               await axios.delete(`${import.meta.env.VITE_API_URL}/api/task/del/${taskId}`, { withCredentials: true });
                return taskId;
           } catch (error) {
                const errorMessage = error.response?.data?.message || error.message || "Failed to delete task";

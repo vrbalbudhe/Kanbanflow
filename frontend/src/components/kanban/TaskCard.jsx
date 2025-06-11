@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -8,10 +8,10 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TaskCard = ({ task, index, columnId }) => {
+  const { user, setId, setBoardId, access } = useContext(AuthContext);
   const params = useParams();
-  const navigate = useNavigate();
   const boardId = params?.id;
-  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(
@@ -24,6 +24,13 @@ const TaskCard = ({ task, index, columnId }) => {
   );
   const [editTags, setEditTags] = useState(task?.tags || []);
   const [editTagInput, setEditTagInput] = useState("");
+
+  useEffect(() => {
+    if (user?.email && boardId) {
+      setBoardId(boardId);
+      setId(user?.email);
+    }
+  }, []);
 
   const {
     attributes,
@@ -376,62 +383,63 @@ const TaskCard = ({ task, index, columnId }) => {
                   {task?.priority || "medium"}
                 </span>
               </div>
-
-              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-1">
-                <button
-                  onClick={() =>
-                    navigate(`/kanban/${boardId}/chat/${task?.id}`)
-                  }
-                  className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded-md transition-all duration-200"
-                >
-                  <AiOutlineComment />
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsEditing(true);
-                  }}
-                  className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded-md transition-all duration-200"
-                  title="Edit task"
-                >
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+              {access?.permission === "editor" && (
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex gap-1">
+                  <button
+                    onClick={() =>
+                      navigate(`/kanban/${boardId}/chat/${task?.id}`)
+                    }
+                    className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded-md transition-all duration-200"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                    />
-                  </svg>
-                </button>
-
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete();
-                  }}
-                  className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-100 rounded-md transition-all duration-200"
-                  title="Delete task"
-                >
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    <AiOutlineComment />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsEditing(true);
+                    }}
+                    className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded-md transition-all duration-200"
+                    title="Edit task"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                  </svg>
-                </button>
-              </div>
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                  </button>
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete();
+                    }}
+                    className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-100 rounded-md transition-all duration-200"
+                    title="Delete task"
+                  >
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}

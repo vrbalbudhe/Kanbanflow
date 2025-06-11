@@ -6,7 +6,7 @@ import { fetchTask, addChat, fetchChats } from "../../features/chats/chatSlice";
 import { AuthContext } from "../../contexts/AuthContext";
 
 function ChatPage() {
-  const { user } = useContext(AuthContext);
+  const { user, setId, setBoardId, access } = useContext(AuthContext);
   const params = useParams();
   const boardId = params?.id;
   const taskId = params?.chatId;
@@ -18,6 +18,13 @@ function ChatPage() {
   const [messages, setMessages] = useState([]);
 
   const currentUserId = user?.username;
+
+  useEffect(() => {
+    if (user?.email && boardId) {
+      setBoardId(boardId);
+      setId(user?.email);
+    }
+  }, []);
 
   useEffect(() => {
     if (taskId) {
@@ -129,7 +136,7 @@ function ChatPage() {
       }
     };
 
-    return (
+    return access?.permission === "editor" && access.userAccess !== "guest" ? (
       <div className="flex items-center p-3 border-t border-gray-300 bg-white">
         <textarea
           className="flex-grow resize-none border rounded-xl px-4 py-2 mr-2 text-sm h-10 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -145,7 +152,7 @@ function ChatPage() {
           Send
         </button>
       </div>
-    );
+    ) : null;
   };
 
   const MessageForum = ({ messages, currentUserId }) => (
@@ -176,7 +183,7 @@ function ChatPage() {
   );
 
   return (
-    <div className="min-h-screen min-w-[80%] bg-gradient-to-br absolute from-zinc-50 via-gray-50 to-white p-6 overflow-hidden">
+    <div className="min-h-screen min-w-[85%] bg-gradient-to-br absolute from-zinc-50 via-gray-50 to-white p-6 overflow-hidden">
       <div className="max-w-full mx-auto">{renderHeader()}</div>
       {task ? (
         taskInfo(task)

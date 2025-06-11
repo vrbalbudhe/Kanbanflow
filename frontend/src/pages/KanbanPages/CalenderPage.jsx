@@ -30,7 +30,7 @@ function CalendarPage() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/task/board/${id}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/task/board/${id}`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data?.tasks)) {

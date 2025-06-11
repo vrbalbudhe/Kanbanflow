@@ -69,7 +69,10 @@ export function Navbar() {
   };
 
   const Logo = () => (
-    <div className="flex-shrink-0 flex items-center">
+    <div
+      onClick={() => navigate("/")}
+      className="flex-shrink-0 flex items-center cursor-pointer"
+    >
       <img className=" w-6 h-6" src="/k.svg" alt="" />
       {/* <div className="bg-gradient-to-br from-blue-600 to-purple-600 text-white p-2 rounded-xl shadow-lg"></div> */}
       <span className="ml-2 text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">

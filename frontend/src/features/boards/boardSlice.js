@@ -12,7 +12,7 @@ export const addBoard = createAsyncThunk(
      "boards/addBoard",
      async ({ title, description, owner, status, userId }, thunkAPI) => {
           const createdAt = new Date().toISOString().split("T")[0];
-          const response = await axios.post("http://localhost:8000/api/board/add", {
+          const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/board/add`, {
                title,
                description,
                owner,
@@ -27,7 +27,7 @@ export const addBoard = createAsyncThunk(
 export const deleteBoard = createAsyncThunk(
      "boards/deleteBoard",
      async (id, thunkAPI) => {
-          await axios.delete(`http://localhost:8000/api/board/del/${id}`, { withCredentials: true });
+          await axios.delete(`${import.meta.env.VITE_API_URL}/api/board/del/${id}`, { withCredentials: true });
           return id;
      }
 );
@@ -35,7 +35,7 @@ export const deleteBoard = createAsyncThunk(
 export const fetchAllBoards = createAsyncThunk(
      "boards/fetchAllBoards",
      async (thunkAPI) => {
-          const response = await axios.get(`http://localhost:8000/api/board/getAll`, { withCredentials: true });
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/board/getAll`, { withCredentials: true });
           return response?.data?.boards;
      }
 );
@@ -44,7 +44,7 @@ export const fetchBoards = createAsyncThunk(
      "boards/fetchBoards",
      async (id, thunkAPI) => {
           if (!id) return thunkAPI.rejectWithValue("User ID is missing");
-          const response = await axios.get(`http://localhost:8000/api/board/get/${id}`, { withCredentials: true });
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/board/get/${id}`, { withCredentials: true });
           return response.data;
      }
 );
@@ -54,7 +54,7 @@ export const fetchBoardByBoardId = createAsyncThunk(
      async (id, thunkAPI) => {
           try {
                if (!id) return thunkAPI.rejectWithValue("Board ID is missing");
-               const response = await axios.get(`http://localhost:8000/api/board/getBoard/${id}`, { withCredentials: true });
+               const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/board/getBoard/${id}`, { withCredentials: true });
                return response?.data?.board;
           } catch (error) {
                return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);

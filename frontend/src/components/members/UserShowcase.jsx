@@ -33,16 +33,14 @@ import {
 import { AuthContext } from "../../contexts/AuthContext";
 
 export const UserShowcase = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setId, setBoardId, access } = useContext(AuthContext);
   const { id } = useParams();
   const dispatch = useDispatch();
   const fullState = useSelector((state) => state);
-  // const participantList = fullState?.participant?.participantList;
   const participantList = useSelector(
     (state) => state?.participant?.participantList
   );
   const status = useSelector((state) => state?.participant?.status);
-  // const status = fullState?.participant?.status;
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
@@ -67,6 +65,13 @@ export const UserShowcase = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [showUserSuggestions, setShowUserSuggestions] = useState(false);
   const [filteredUsers, setFilteredUsers] = useState([]);
+
+  useEffect(() => {
+    if (user?.email && id) {
+      setBoardId(id);
+      setId(user?.email);
+    }
+  }, []);
 
   useEffect(() => {
     fetchAllUsers();
@@ -183,9 +188,12 @@ export const UserShowcase = () => {
 
   const fetchAllUsers = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/all", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/user/all`,
+        {
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         setAllUsers(data?.user || []);
@@ -374,17 +382,18 @@ export const UserShowcase = () => {
               className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="all">All Permissions</option>
-              <option value="admin">Admin</option>
               <option value="editor">Editor</option>
               <option value="viewer">Viewer</option>
             </select>
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              Add Member
-            </button>
+            {access.userAccess === "admin" && (
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+              >
+                <Plus className="w-4 h-4" />
+                Add Member
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -441,7 +450,6 @@ export const UserShowcase = () => {
               {participant.userAccess}
             </div>
           </div>
-
           <div className="text-xs text-gray-500 text-center">
             <div className="mb-1 font-medium text-gray-700">Permission</div>
             <div
@@ -453,7 +461,6 @@ export const UserShowcase = () => {
               {participant.permission}
             </div>
           </div>
-
           <div className="text-xs text-gray-500 text-center">
             <div className="mb-1 font-medium text-gray-700">Joined</div>
             <div className="flex items-center gap-1 text-gray-600">
@@ -461,19 +468,19 @@ export const UserShowcase = () => {
               {createdDate.toLocaleDateString()}
             </div>
           </div>
-
           <div className="relative">
-            <button
-              onClick={() =>
-                setShowDropdown(
-                  showDropdown === participant.id ? null : participant.id
-                )
-              }
-              className="p-1 hover:bg-gray-100 rounded-md transition-colors"
-            >
-              <MoreVertical className="w-4 h-4 text-gray-500" />
-            </button>
-
+            {access?.userAccess === "admin" && (
+              <button
+                onClick={() =>
+                  setShowDropdown(
+                    showDropdown === participant.id ? null : participant.id
+                  )
+                }
+                className="p-1 hover:bg-gray-100 rounded-md transition-colors"
+              >
+                <MoreVertical className="w-4 h-4 text-gray-500" />
+              </button>
+            )}
             {showDropdown === participant.id && (
               <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-10 min-w-32">
                 <button
@@ -557,7 +564,6 @@ export const UserShowcase = () => {
                 {allUsers
                   .filter(
                     (usr) =>
-                      usr.email !== user?.email &&
                       !participantList.some(
                         (participant) => participant.email === usr.email
                       )
@@ -598,7 +604,6 @@ export const UserShowcase = () => {
               >
                 <option value="viewer">Viewer</option>
                 <option value="editor">Editor</option>
-                <option value="admin">Admin</option>
               </select>
             </div>
             <div className="flex gap-2 pt-4">

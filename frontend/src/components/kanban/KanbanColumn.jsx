@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useSortable } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
@@ -10,13 +10,24 @@ import { CSS } from "@dnd-kit/utilities";
 import ColumnHeader from "./ColumnHeader";
 import TaskCard from "./TaskCard";
 import AddTaskForm from "./AddTaskForm";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
 
 const KanbanColumn = ({ column, index, isDragHandle }) => {
+  const { user, setId, setBoardId, access } = useContext(AuthContext);
+  const params = useParams();
+  const boardId = params?.id;
   const dispatch = useDispatch();
   const allTasks = useSelector((state) => state.task.tasks);
   const tasksLoading = useSelector((state) => state.task.loading);
 
-  // Column sortable for column reordering
+  useEffect(() => {
+    if (user?.email && boardId) {
+      setBoardId(boardId);
+      setId(user?.email);
+    }
+  }, []);
+
   const {
     attributes,
     listeners,
@@ -135,30 +146,31 @@ const KanbanColumn = ({ column, index, isDragHandle }) => {
         )}
       </div>
 
-      {/* Add Task Button */}
-      <div className="p-3">
-        {!showAddTask && (
-          <button
-            onClick={() => setShowAddTask(true)}
-            className="w-full p-2 text-sm text-gray-600 bg-transparent border-2 border-dashed border-gray-300 rounded hover:border-blue-300 hover:text-blue-600 transition-colors duration-200 flex items-center justify-center gap-2"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      {access?.permission === "editor" && (
+        <div className="p-3">
+          {!showAddTask && (
+            <button
+              onClick={() => setShowAddTask(true)}
+              className="w-full p-2 text-sm text-gray-600 bg-transparent border-2 border-dashed border-gray-300 rounded hover:border-blue-300 hover:text-blue-600 transition-colors duration-200 flex items-center justify-center gap-2"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Add a task
-          </button>
-        )}
-      </div>
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Add a task
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

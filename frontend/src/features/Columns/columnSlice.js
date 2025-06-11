@@ -13,7 +13,7 @@ export const addColumn = createAsyncThunk(
      async ({ name, colorCode, boardId, orderId }, thunkAPI) => {
           try {
                const response = await axios.post(
-                    "http://localhost:8000/api/column/add",
+                    `${import.meta.env.VITE_API_URL}/api/column/add`,
                     { name, colorCode, boardId, orderId },
                     { withCredentials: true }
                );
@@ -30,7 +30,7 @@ export const fetchColumns = createAsyncThunk(
           if (!boardId) return thunkAPI.rejectWithValue("Board ID is missing");
           try {
                const response = await axios.get(
-                    `http://localhost:8000/api/column/getAll/${boardId}`,
+                    `${import.meta.env.VITE_API_URL}/api/column/getAll/${boardId}`,
                     { withCredentials: true }
                );
                return response?.data?.columns;
@@ -43,7 +43,7 @@ export const fetchColumns = createAsyncThunk(
 export const deleteColumn = createAsyncThunk(
      "boards/deleteColumn",
      async (id, thunkAPI) => {
-          await axios.delete(`http://localhost:8000/api/column/del/${id}`, { withCredentials: true });
+          await axios.delete(`${import.meta.env.VITE_API_URL}/api/column/del/${id}`, { withCredentials: true });
           return id;
      }
 );
@@ -53,7 +53,7 @@ export const reorderColumnsAsync = createAsyncThunk(
      async ({ boardId, columnOrderData }, thunkAPI) => {
           try {
                const response = await axios.put(
-                    `http://localhost:8000/api/column/reorder/${boardId}`,
+                    `${import.meta.env.VITE_API_URL}/api/column/reorder/${boardId}`,
                     { columnOrderData },
                     { withCredentials: true }
                );

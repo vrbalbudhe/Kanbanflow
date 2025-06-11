@@ -7,6 +7,10 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [access, setAccess] = useState([]);
+
+  const [id, setId] = useState();
+  const [boardId, setBoardId] = useState();
 
   const refreshLoginContext = async () => {
     await fetchUser();
@@ -15,7 +19,7 @@ export const AuthContextProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/user/isToken",
+        `${import.meta.env.VITE_API_URL}/api/user/isToken`,
         {
           withCredentials: true,
         }
@@ -25,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
 
       if (userInfo?.userId) {
         const response1 = await axios.get(
-          `http://localhost:8000/api/user/get/id/${userInfo?.userId}`,
+          `${import.meta.env.VITE_API_URL}/api/user/get/id/${userInfo?.userId}`,
           {
             withCredentials: true,
           }
@@ -39,12 +43,41 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
+  const fetchUserAccess = async ({ boardId, id }) => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/participant/getAll/${boardId}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      const participants = response?.data?.members || [];
+      const userParticipant = participants.find(
+        (participant) => participant?.email === id
+      );
+
+      const permission = {
+        permission: userParticipant?.permission,
+        userAccess: userParticipant?.userAccess,
+      };
+
+      setAccess(permission || []);
+    } catch (error) {
+      console.error("Error fetching user access:", error);
+      setAccess(false);
+    }
+  };
+
   useEffect(() => {
     fetchUser();
+    if (id && boardId) {
+      fetchUserAccess({ boardId: boardId, id: id });
+    }
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, []);
+  }, [id, boardId]);
 
   if (loading) {
     return (
@@ -61,8 +94,13 @@ export const AuthContextProvider = ({ children }) => {
         setUser,
         fetchUser,
         setLoading,
+        access,
+        setAccess,
+        fetchUserAccess,
         loading,
         refreshLoginContext,
+        setId,
+        setBoardId,
       }}
     >
       {children}

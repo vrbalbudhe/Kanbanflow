@@ -16,7 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import AddColumnButton from "../components/kanban/AddColumnButton";
 import KanbanColumn from "../components/kanban/KanbanColumn";
 import TaskCard from "../components/kanban/TaskCard";
@@ -33,8 +33,10 @@ import { CommandIcon, Info } from "lucide-react";
 import { fetchColumns } from "../features/Columns/columnSlice";
 import { fetchBoardByBoardId } from "../features/boards/boardSlice";
 import { useEffect } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const KanbanDashboard = () => {
+  const { user, setId, setBoardId, access } = useContext(AuthContext);
   const params = useParams();
   const boardId = params?.id;
   const dispatch = useDispatch();
@@ -46,6 +48,13 @@ const KanbanDashboard = () => {
   const boardState = useSelector((state) => state.boards || {});
   const kanbanState = useSelector((state) => state.kanban || {});
   const taskState = useSelector((state) => state.task || {});
+
+  useEffect(() => {
+    if (user?.email && boardId) {
+      setBoardId(boardId);
+      setId(user?.email);
+    }
+  }, []);
 
   const {
     columnList = [],
@@ -62,7 +71,6 @@ const KanbanDashboard = () => {
 
   const { tasks = {}, columnOrder = [] } = kanbanState;
 
-  // Get all tasks from the task state
   const allTasks = useSelector((state) => state.task.tasks || []);
 
   useEffect(() => {
@@ -256,9 +264,11 @@ const KanbanDashboard = () => {
                   isDragHandle={true}
                 />
               ))}
-            <div className="flex-shrink-0">
-              <AddColumnButton />
-            </div>
+            {access.permission === "editor" && (
+              <div className="flex-shrink-0">
+                <AddColumnButton />
+              </div>
+            )}
           </div>
         </SortableContext>
       </div>

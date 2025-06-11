@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
   Upload,
   File,
@@ -16,8 +16,13 @@ import {
   Plus,
   Command,
 } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 
 function ArchivePage() {
+  const { user, setId, setBoardId, access } = useContext(AuthContext);
+  const params = useParams();
+  const boardId = params?.id;
   const [files, setFiles] = useState([]);
   const [dragActive, setDragActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,8 +32,14 @@ function ArchivePage() {
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Mock ID for demo purposes - replace with actual router params in real app
-  const id = "demo-123";
+  useEffect(() => {
+    if (user?.email && boardId) {
+      setBoardId(boardId);
+      setId(user?.email);
+    }
+  }, []);
+
+  const id = user?.id;
 
   useEffect(() => {
     fetchFiles();
@@ -37,7 +48,9 @@ function ArchivePage() {
   const fetchFiles = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:8000/api/archive/files");
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/archive/files`
+      );
       const data = await res.json();
       setFiles(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -67,10 +80,13 @@ function ArchivePage() {
 
       const formData = new FormData();
       newFiles.forEach((file) => formData.append("files", file));
-      const res = await fetch("http://localhost:8000/api/archive/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/archive/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const uploadedFiles = await res.json();
 
       setFiles((prev) => [...prev, ...uploadedFiles]);
@@ -83,9 +99,12 @@ function ArchivePage() {
 
   const handleDelete = async (fileId) => {
     try {
-      await fetch(`http://localhost:8000/api/archive/file/${fileId}`, {
-        method: "DELETE",
-      });
+      await fetch(
+        `${import.meta.env.VITE_API_URL}/api/archive/file/${fileId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       setFiles((prev) => prev.filter((file) => file.id !== fileId));
       setSelectedFiles((prev) => prev.filter((id) => id !== fileId));
@@ -96,7 +115,7 @@ function ArchivePage() {
 
   const handleBulkDelete = async () => {
     try {
-      await fetch("http://localhost:8000/api/archive/files/delete", {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/archive/files/delete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ids: selectedFiles }),
@@ -497,7 +516,7 @@ function ArchivePage() {
     <div className="min-h-screen bg-gray-50">
       <div className="min-w-7xl mx-auto p-6">
         {renderHeader()}
-        {renderUploadArea()}
+        {access.permission === "editor" && renderUploadArea()}
         {renderControls()}
         {loading ? (
           <div className="text-center py-16">

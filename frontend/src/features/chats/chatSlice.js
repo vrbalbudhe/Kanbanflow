@@ -10,7 +10,7 @@ const initialState = {
 
 export const fetchTask = createAsyncThunk("chat/fetchTask", async ({ taskId }, thunkAPI) => {
      if (!taskId) return thunkAPI.rejectWithValue("Task ID is missing");
-     const response = await axios.get(`http://localhost:8000/api/task/get/${taskId}`, {
+     const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/task/get/${taskId}`, {
           withCredentials: true,
      });
      return response?.data?.task;
@@ -18,7 +18,7 @@ export const fetchTask = createAsyncThunk("chat/fetchTask", async ({ taskId }, t
 
 export const fetchChats = createAsyncThunk("chat/fetchChat", async ({ taskId }, thunkAPI) => {
      if (!taskId) return thunkAPI.rejectWithValue("Task ID is missing");
-     const response = await axios.get(`http://localhost:8000/api/chat/getAll/${taskId}`, {
+     const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/getAll/${taskId}`, {
           withCredentials: true,
      });
      return response?.data?.chats;
@@ -26,7 +26,7 @@ export const fetchChats = createAsyncThunk("chat/fetchChat", async ({ taskId }, 
 
 export const fetchAllChatsByBoardId = createAsyncThunk("chat/fetchAllChatsByTaskId", async ({ boardId }, thunkAPI) => {
      if (!boardId) return thunkAPI.rejectWithValue("BoardId is missing");
-     const response = await axios.get(`http://localhost:8000/api/chat/getAllByBoardId/${boardId}`, {
+     const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/getAllByBoardId/${boardId}`, {
           withCredentials: true,
      });
      return response?.data?.chats;
@@ -35,7 +35,7 @@ export const fetchAllChatsByBoardId = createAsyncThunk("chat/fetchAllChatsByTask
 export const addChat = createAsyncThunk("chat/addChat", async ({ message, senderId, taskId }, thunkAPI) => {
      const createdAt = new Date().toISOString();
      const response = await axios.post(
-          `http://localhost:8000/api/chat/add/${taskId}`,
+          `${import.meta.env.VITE_API_URL}/api/chat/add/${taskId}`,
           { message, senderId, createdAt },
           { withCredentials: true }
      );
