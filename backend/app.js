@@ -46,7 +46,7 @@ console.log("7");
 app.use("/api/participant", participantRoute);
 console.log("8");
 
-const PORT = process.env.BACKEND_PORT;
+const PORT = process.env.BACKEND_PORT || 8000;
 app.listen(PORT, () => {
      console.log(`${PORT} is Listening!`);
 })
