@@ -27,16 +27,24 @@ app.use(express.static(path.join(__dirname, "public", "dist")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
+     res.sendFile(path.join(__dirname, "public", "dist", "index.html"));
 });
 
+console.log("1");
 app.use("/api/user", userRoute);
+console.log("2");
 app.use("/api/task", taskRoute);
+console.log("3");
 app.use("/api/chat", chatRoute);
+console.log("4");
 app.use("/api/board", boardRoute);
+console.log("5");
 app.use("/api/column", columnRoute);
+console.log("6");
 app.use("/api/archive", archiveRoute);
+console.log("7");
 app.use("/api/participant", participantRoute);
+console.log("8");
 
 const PORT = process.env.BACKEND_PORT;
 app.listen(PORT, () => {
