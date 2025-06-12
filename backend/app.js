@@ -26,16 +26,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
-app.use("/api/user", userRoute);
-app.use("/api/task", taskRoute);
-app.use("/api/chat", chatRoute);
-app.use("/api/board", boardRoute);
-app.use("/api/column", columnRoute);
-app.use("/api/archive", archiveRoute);
-app.use("/api/participant", participantRoute);
+app.use(`${process.env.BACKEND_URL}/api/user`, userRoute);
+app.use(`${process.env.BACKEND_URL}/api/task`, taskRoute);
+app.use(`${process.env.BACKEND_URL}/api/chat`, chatRoute);
+app.use(`${process.env.BACKEND_URL}/api/board`, boardRoute);
+app.use(`${process.env.BACKEND_URL}/api/column`, columnRoute);
+app.use(`${process.env.BACKEND_URL}/api/archive`, archiveRoute);
+app.use(`${process.env.BACKEND_URL}/api/participant`, participantRoute);
 
 
-const PORT = process.env.BACKEND_PORT || 8000;
+const PORT = process.env.BACKEND_PORT;
 app.listen(PORT, () => {
      console.log(`${PORT} is Listening!`);
 })
