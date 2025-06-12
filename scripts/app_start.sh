@@ -4,7 +4,8 @@ set -e
 AWS_REGION="ap-south-1"
 APP_DIR="/var/www/kbf"
 
-cd $APP_DIR
+cd $APP_DIR 
+
 
 echo "Starting Node application from $APP_DIR..."
 echo "Fetching environment variables from AWS Parameter Store..."
