@@ -16,7 +16,7 @@ phases:
       - npm run build 
       - echo Copying frontend build to backend public directory...
       - mkdir -p ../backend/public
-      - cp -r dist/* ../backend/public/
+      - cp -r dist ../backend/public
   post_build:
     commands:
       - echo Build completed on `date`

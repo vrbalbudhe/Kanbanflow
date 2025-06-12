@@ -25,6 +25,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.get("*", (req, res) => {
+     res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 app.use("/api/user", userRoute);
 app.use("/api/task", taskRoute);
 app.use("/api/chat", chatRoute);
