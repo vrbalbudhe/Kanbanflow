@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+AWS_REGION="ap-south-1"
 APP_DIR="/var/www/kbf"
 
 cd $APP_DIR
@@ -17,19 +18,19 @@ VITE_API_URL_PARAM="/kbf/VITE_API_URL"
 
 # Fetching parameters
 echo "Fetching DATABASE_URL..."
-DATABASE_URL=$(aws ssm get-parameter --name "$DATABASE_URL_PARAM" --with-decryption --query Parameter.Value --output text) || { echo "Failed to fetch DATABASE_URL"; exit 1; }
+DATABASE_URL=$(aws ssm get-parameter --region "$AWS_REGION" --name "$DATABASE_URL_PARAM" --with-decryption --query Parameter.Value --output text) || { echo "Failed to fetch DATABASE_URL"; exit 1; }
 
 echo "Fetching FRONTEND_URL..."
-FRONTEND_URL=$(aws ssm get-parameter --name "$FRONTEND_URL_PARAM" --with-decryption --query Parameter.Value --output text) || { echo "Failed to fetch FRONTEND_URL"; exit 1; }
+FRONTEND_URL=$(aws ssm get-parameter --region "$AWS_REGION" --name "$FRONTEND_URL_PARAM" --with-decryption --query Parameter.Value --output text) || { echo "Failed to fetch FRONTEND_URL"; exit 1; }
 
 echo "Fetching JWT_SECRET..."
-JWT_SECRET=$(aws ssm get-parameter --name "$JWT_SECRET_PARAM" --with-decryption --query Parameter.Value --output text) || { echo "Failed to fetch JWT_SECRET"; exit 1; }
+JWT_SECRET=$(aws ssm get-parameter --region "$AWS_REGION" --name "$JWT_SECRET_PARAM" --with-decryption --query Parameter.Value --output text) || { echo "Failed to fetch JWT_SECRET"; exit 1; }
 
 echo "Fetching BACKEND_PORT..."
-BACKEND_PORT=$(aws ssm get-parameter --name "$BACKEND_PORT_PARAM" --query Parameter.Value --output text) || { echo "Failed to fetch BACKEND_PORT"; exit 1; }
+BACKEND_PORT=$(aws ssm get-parameter --region "$AWS_REGION" --name "$BACKEND_PORT_PARAM" --query Parameter.Value --output text) || { echo "Failed to fetch BACKEND_PORT"; exit 1; }
 
 echo "Fetching VITE_API_URL..."
-VITE_API_URL=$(aws ssm get-parameter --name "$VITE_API_URL_PARAM" --query Parameter.Value --output text) || { echo "Failed to fetch VITE_API_URL"; exit 1; }
+VITE_API_URL=$(aws ssm get-parameter --region "$AWS_REGION" --name "$VITE_API_URL_PARAM" --query Parameter.Value --output text) || { echo "Failed to fetch VITE_API_URL"; exit 1; }
 
 # Write to .env
 echo "Writing .env file..."
