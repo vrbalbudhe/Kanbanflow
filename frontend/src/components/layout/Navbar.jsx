@@ -44,13 +44,16 @@ export function Navbar() {
     try {
       setErrors({});
       setIsLoading(true);
-      const response = await fetch("http://localhost:8000/api/user/logout", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/user/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setUser(data?.user);
