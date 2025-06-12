@@ -4,7 +4,7 @@ const express = require("express")
 const app = express();
 const cors = require("cors");
 const corsOptions = {
-     origin: process.env.FRONTEND_URL,
+     origin: process.env.FRONTEND_URL || "https://kanbanflow-x5ct.onrender.com",
      credentials: true
 };
 
