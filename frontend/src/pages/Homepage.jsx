@@ -1,5 +1,5 @@
 import React from "react";
-import KanbanSection from "../components/homepage/kanbanSection";
+import KanbanSection from "../components/homepage/KanbanSection";
 import HeroSection from "../components/homepage/HeroSection";
 
 function Homepage() {

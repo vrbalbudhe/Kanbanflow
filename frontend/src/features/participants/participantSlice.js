@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const initialState = {
-     status: "idle", // Add status to initial state
+     error: null,
+     status: "idle",
+     loading: false,
      currentBoard: null,
      participantList: [],
-     loading: false,
-     error: null
 }
 
 export const addParticipants = createAsyncThunk("/participant/addParticipants", async ({ email, permission, userAccess, boardId }, thunkAPI) => {
