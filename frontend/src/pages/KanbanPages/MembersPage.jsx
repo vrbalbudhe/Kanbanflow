@@ -40,7 +40,7 @@ function MembersPage() {
         </h1>
         <h1 className="text-sm italic flex justify-start items-center gap-1 font-normal text-gray-500 mb-2">
           <span>
-            <Info className="h-4 w-4 text-gray-600" />
+            <Info className="h-4 w-4 hidden md:block text-gray-600" />
           </span>
           {fullState?.board?.currentBoard?.description}
         </h1>

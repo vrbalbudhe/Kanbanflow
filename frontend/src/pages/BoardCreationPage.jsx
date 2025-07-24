@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addBoard,
@@ -52,12 +53,22 @@ const BoardCreationPage = () => {
 
       setFormData({ title: "", description: "", status: "active" });
       setIsModalOpen(false);
+      toast.success("Board Created Successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+      });
     }
   };
 
   const handleDeleteBoard = (id) => {
     if (window.confirm("Do You Want To Delete The Board?")) {
       dispatch(deleteBoard(id));
+      toast.success("Board Deleted Successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+      });
     }
   };
 

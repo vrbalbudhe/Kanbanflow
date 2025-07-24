@@ -36,7 +36,6 @@ export const UserShowcase = () => {
   const { user, setId, setBoardId, access } = useContext(AuthContext);
   const { id } = useParams();
   const dispatch = useDispatch();
-  const fullState = useSelector((state) => state);
   const participantList = useSelector(
     (state) => state?.participant?.participantList
   );
@@ -353,8 +352,8 @@ export const UserShowcase = () => {
 
   const renderSearchAndFilters = () => {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+      <div className="bg-white p-3 md:p-6 rounded-lg shadow-sm border border-gray-200">
+        <div className=" flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <input
@@ -365,7 +364,7 @@ export const UserShowcase = () => {
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col md:flex-row gap-2">
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
@@ -409,9 +408,9 @@ export const UserShowcase = () => {
     return (
       <div
         key={participant.id || participant._id}
-        className="w-full flex items-center justify-between gap-4 p-4 border-b border-gray-200 hover:bg-gray-50 transition"
+        className="w-full flex md:flex-row flex-col items-center justify-between gap-4 p-4 border-b border-gray-200 hover:bg-gray-50 transition"
       >
-        <div className="flex items-center gap-4 min-w-0">
+        <div className="w-full flex items-center gap-4 min-w-0">
           <div className="relative">
             <img
               src={
@@ -636,7 +635,7 @@ export const UserShowcase = () => {
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+        <div className="bg-white rounded-lg p-3 md:p-6 w-full max-w-md mx-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Edit Member</h3>
             <button
@@ -727,7 +726,7 @@ export const UserShowcase = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="md:space-y-6 space-y-4">
       {renderStatsCards()}
       {renderSearchAndFilters()}
       {renderMembersGrid()}

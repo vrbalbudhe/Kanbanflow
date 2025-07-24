@@ -215,19 +215,19 @@ const KanbanDashboard = () => {
   };
 
   const renderHeader = () => (
-    <div className="w-full mb-8 select-none flex justify-between items-center">
+    <div className="w-full mb-8 select-none flex flex-col md:flex-row justify-between items-center">
       <div>
         <h1 className="text-3xl font-medium text-gray-700 tracking-tight mb-2">
           {fullState?.board?.currentBoard?.title}
         </h1>
         <h1 className="text-sm italic flex justify-center items-center gap-1 font-normal text-gray-500 mb-2">
-          <span>
+          <span className="md:block hidden">
             <Info className="h-4 w-4 text-gray-600" />
           </span>
           {fullState?.board?.currentBoard?.description}
         </h1>
       </div>
-      <p className="text-gray-400 text-sm flex justify-center items-center gap-1">
+      <p className="text-gray-400 text-sm w-full md:w-fit flex md:justify-center items-center gap-1">
         <span>
           <CommandIcon className="h-4 w-4 text-gray-600" />
         </span>
@@ -253,7 +253,7 @@ const KanbanDashboard = () => {
           items={columnList.map((col) => col.id)}
           strategy={horizontalListSortingStrategy}
         >
-          <div className="flex flex-wrap gap-6 min-h-[calc(100vh-200px)] w-fit pb-6">
+          <div className="w-full flex flex-wrap gap-6 min-h-[calc(100vh-200px)] md:w-fit pb-6">
             {Array.isArray(columnList) &&
               columnList.map((column, index) => (
                 <KanbanColumn
@@ -351,12 +351,12 @@ const KanbanDashboard = () => {
     const stats = getStats();
     return (
       <div className="mt-8 bg-white rounded-lg shadow-sm border p-4">
-        <div className="flex items-center justify-between text-sm text-gray-500">
-          <div className="flex gap-6">
+        <div className="flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
+          <div className="w-full md:w-fit flex justify-start gap-6">
             <span>{stats.columnCount} columns</span>
             <span>{stats.totalTasks} total tasks</span>
           </div>
-          <div className="text-xs">
+          <div className="text-xs mt-2 md:mt-0">
             Drag columns and tasks to reorganize • Double-click to edit
           </div>
         </div>
@@ -380,7 +380,7 @@ const KanbanDashboard = () => {
   const isLoading = columnsLoading || boardStatus === "loading";
 
   return (
-    <div className="min-h-screen min-w-[80%] bg-gradient-to-br absolute from-zinc-50 via-gray-50 to-white p-6 overflow-hidden">
+    <div className="min-h-screen min-w-[90%] flex bg-gradient-to-br absolute from-zinc-50 via-gray-50 to-white md:p-6 p-3 overflow-hidden">
       <div className="max-w-full mx-auto">
         {renderHeader()}
 

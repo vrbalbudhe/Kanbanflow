@@ -15,10 +15,12 @@ export const CreationLayout = () => {
         <Navbar />
       </div>
       <div className="flex flex-1 min-h-0 overflow-hidden">
-        <Sidebar
-          selectedIcon={selectedIcon}
-          setSelectedIcon={setSelectedIcon}
-        />
+        <div className="hidden md:block">
+          <Sidebar
+            selectedIcon={selectedIcon}
+            setSelectedIcon={setSelectedIcon}
+          />
+        </div>
 
         <div className="flex-1 overflow-x-auto overflow-y-auto h-full">
           <Outlet />

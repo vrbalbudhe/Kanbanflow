@@ -71,7 +71,7 @@ const KanbanColumn = ({ column, index, isDragHandle }) => {
     <div
       ref={setColumnRef}
       className={`
-        flex flex-col w-80 rounded-2xl shadow-sm 
+        flex flex-col w-full md:w-80 rounded-2xl shadow-sm 
         ${isColumnDragging ? "shadow-lg rotate-1 scale-105" : ""}
         transition-all duration-200
         ${column?.colorCode ? "" : "bg-white border-1 border-dotted border-blue-500"}

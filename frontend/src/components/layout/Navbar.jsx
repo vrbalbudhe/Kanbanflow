@@ -10,18 +10,39 @@ import {
   Kanban,
   Users,
   Calendar,
-  BarChart3,
   LogIn,
   PlusIcon,
+  BarChart3,
 } from "lucide-react";
 import LoginForm from "../auth/LoginForm";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+const MobileMenuItem = ({ icon, text, active, href_link }) => {
+  const navigate = useNavigate();
+
+  return (
+    <button
+      onClick={() => navigate(href_link)}
+      className={`w-full flex items-center pl-4 pr-4 py-3 border-l-4 text-base font-medium transition-all duration-200 ${
+        active
+          ? "bg-blue-50 border-blue-500 text-blue-700"
+          : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300"
+      }`}
+    >
+      <span className="mr-3">{icon}</span>
+      {text}
+    </button>
+  );
+};
 
 export function Navbar() {
-  const navigate = useNavigate();
   const { user, setUser } = useContext(AuthContext);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [modal, setModal] = useState(false);
@@ -52,16 +73,21 @@ export function Navbar() {
       );
 
       const data = await response.json();
-      setUser(data?.user);
-
-      window.location.reload();
+      setUser(null);
       if (!response.ok) {
         setErrors({ general: data.message || "Logout failed" });
+        toast.error("Logout failed!");
       } else {
-        console.log("Login success:", data);
+        toast.success("Logout Success!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+        });
+        window.location.href = "/";
       }
     } catch (error) {
       setErrors({ general: "Network error. Please try again." });
+      toast.error("Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -184,6 +210,15 @@ export function Navbar() {
     </button>
   );
 
+  const getCurrentBoardId = () => {
+    if (id) return id;
+    const currentPath = location.pathname;
+    const boardIdMatch = currentPath.match(/\/kanban\/([^\/]+)/);
+    return boardIdMatch ? boardIdMatch[1] : null;
+  };
+
+  const currentBoardId = getCurrentBoardId();
+
   const MobileMenu = () => (
     <div className="md:hidden border-t border-gray-200 bg-white">
       <div className="pt-2 pb-3 space-y-1">
@@ -191,16 +226,27 @@ export function Navbar() {
           icon={<Home className="h-5 w-5" />}
           text="Dashboard"
           active
+          href_link={`/kanban/${currentBoardId}/home`}
         />
-        <MobileMenuItem icon={<Kanban className="h-5 w-5" />} text="Boards" />
-        <MobileMenuItem icon={<Users className="h-5 w-5" />} text="Teams" />
+        <MobileMenuItem
+          icon={<Kanban className="h-5 w-5" />}
+          text="Boards"
+          href_link={`/kanban/${currentBoardId}/members`}
+        />
+        <MobileMenuItem
+          icon={<Users className="h-5 w-5" />}
+          text="Teams"
+          href_link={`/kanban/${currentBoardId}/discussion`}
+        />
         <MobileMenuItem
           icon={<Calendar className="h-5 w-5" />}
           text="Calendar"
+          href_link={`/kanban/${currentBoardId}/calender`}
         />
         <MobileMenuItem
           icon={<BarChart3 className="h-5 w-5" />}
           text="Analytics"
+          href_link={`/kanban/${currentBoardId}/archive`}
         />
       </div>
       <div className="pt-4 pb-3 border-t border-gray-200">
@@ -209,19 +255,6 @@ export function Navbar() {
         </div>
       </div>
     </div>
-  );
-
-  const MobileMenuItem = ({ icon, text, active = false }) => (
-    <button
-      className={`w-full flex items-center pl-4 pr-4 py-3 border-l-4 text-base font-medium transition-all duration-200 ${
-        active
-          ? "bg-blue-50 border-blue-500 text-blue-700"
-          : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300"
-      }`}
-    >
-      <span className="mr-3">{icon}</span>
-      {text}
-    </button>
   );
 
   const MobileSearchBar = () => (
@@ -259,7 +292,7 @@ export function Navbar() {
             <Logo />
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center md:space-x-4">
             <LoginButton />
             {user && <ProfileDropdown />}
             <MobileMenuButton />

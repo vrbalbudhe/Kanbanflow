@@ -9,6 +9,7 @@ import {
   Chrome,
 } from "lucide-react";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 function LoginForm({ setModal }) {
   const [formData, setFormData] = useState({
@@ -67,22 +68,31 @@ function LoginForm({ setModal }) {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/user/login`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/user/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
       setUser(data?.user);
 
       if (!response.ok) {
         setErrors({ general: data.message || "Login failed" });
+        toast.error("Logout failed!");
       } else {
         await handleClosingModal();
+        toast.success("Login Success!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+        });
       }
     } catch (error) {
       setErrors({ general: "Network error. Please try again." });

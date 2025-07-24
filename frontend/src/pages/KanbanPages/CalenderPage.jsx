@@ -3,12 +3,9 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
-  Calendar,
   Clock,
-  User,
   Tag,
   X,
-  Edit3,
   Trash2,
 } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -220,17 +217,17 @@ function CalendarPage() {
 
   return (
     <div className="min-h-screen ">
-      <div className="min-w-7xl mx-auto p-3">
+      <div className="w-full md:min-w-7xl mx-auto p-3">
         <div className="bg-white rounded-md shadow-md overflow-hidden">
           <div className="bg-gradient-to-r text-gray-700 p-6">
-            <div className="flex items-center justify-between">
+            <div className="w-full flex md:flex-row flex-col items-start gap-2 md:items-center justify-between">
               <div>
                 <h1 className="text-3xl font-medium">Calendar</h1>
-                <p className="text-gray-600 mt-1">
+                <p className="text-gray-600 text-sm mt-1">
                   Manage your tasks and schedule
                 </p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="w-full flex items-center md:space-x-4">
                 <button
                   onClick={handlePrevMonth}
                   className="p-2 hover:bg-white/20 rounded-lg transition-colors"
@@ -262,7 +259,7 @@ function CalendarPage() {
               ))}
             </div>
 
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
               {days.map((day, index) => {
                 const dayTasks = getTasksForDate(day.fullDate);
                 const isCurrentMonth = day.isCurrentMonth;
