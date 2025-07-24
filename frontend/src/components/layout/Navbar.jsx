@@ -2,9 +2,7 @@ import { useState } from "react";
 import {
   Menu,
   X,
-  Bell,
   Search,
-  Plus,
   User,
   Settings,
   LogOut,
@@ -14,13 +12,11 @@ import {
   Calendar,
   BarChart3,
   LogIn,
-  User2,
   PlusIcon,
 } from "lucide-react";
 import LoginForm from "../auth/LoginForm";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext } from "react";
-import { Profiler } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function Navbar() {
@@ -84,19 +80,6 @@ export function Navbar() {
     </div>
   );
 
-  const SearchBar = () => (
-    <div className="hidden lg:block relative">
-      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <Search className="h-5 w-5 text-gray-400" />
-      </div>
-      <input
-        type="text"
-        placeholder="Search boards, cards..."
-        className="block w-80 pl-10 pr-4 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 hover:border-gray-400"
-      />
-    </div>
-  );
-
   const LoginButton = () =>
     user ? (
       <button
@@ -115,16 +98,6 @@ export function Navbar() {
         Sign In
       </button>
     );
-
-  const NotificationBell = () => (
-    <button className="p-2.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all duration-200 relative group">
-      <Bell className="h-6 w-6" />
-      <span className="absolute top-1.5 right-1.5 block h-3 w-3 rounded-full bg-red-500 ring-2 ring-white animate-pulse"></span>
-      <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-        3 new notifications
-      </div>
-    </button>
-  );
 
   const ProfileDropdown = () => (
     <div className="relative">
@@ -287,7 +260,6 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* <SearchBar /> */}
             <LoginButton />
             {user && <ProfileDropdown />}
             <MobileMenuButton />

@@ -4,7 +4,7 @@ const express = require("express")
 const app = express();
 const cors = require("cors");
 const corsOptions = {
-     origin: process.env.FRONTEND_URL || "https://kanbanflow-x5ct.onrender.com",
+     origin: process.env.FRONTEND_URL,
      credentials: true
 };
 
@@ -34,7 +34,6 @@ app.use("/api/board", boardRoute);
 app.use("/api/column", columnRoute);
 app.use("/api/archive", archiveRoute);
 app.use("/api/participant", participantRoute);
-
 
 const PORT = process.env.BACKEND_PORT || 8000;
 app.listen(PORT, () => {

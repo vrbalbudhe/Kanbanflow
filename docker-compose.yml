@@ -1,0 +1,24 @@
+services:
+  backend:
+    container_name: backend-kbf
+    build:
+      context: "./backend"
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+    depends_on:
+      - frontend
+
+  frontend:
+    container_name: frontend-kbf
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./frontend/.env
+    restart: unless-stopped

@@ -50,11 +50,12 @@ const LoginUser = asyncHandler(async (req, res) => {
                expiresIn: "7d",
           });
 
+          const isProduction = process.env.NODE_ENV === "production";
           const CookieOptions = {
                httpOnly: true,
                maxAge: 1000 * 60 * 240,
-               sameSite: "Lax",
-               secure: false,
+               sameSite: "None",
+               secure: isProduction,
                path: "/"
           };
           const { password: _, ...userInfo } = findUser;
