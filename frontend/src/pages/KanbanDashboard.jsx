@@ -215,19 +215,19 @@ const KanbanDashboard = () => {
   };
 
   const renderHeader = () => (
-    <div className="w-full mb-8 select-none flex flex-col md:flex-row justify-between items-center">
+    <div className="w-full mb-8 select-none flex flex-col md:flex-row md:justify-between md:items-center">
       <div>
         <h1 className="text-3xl font-medium text-gray-700 tracking-tight mb-2">
           {fullState?.board?.currentBoard?.title}
         </h1>
-        <h1 className="text-sm italic flex justify-center items-center gap-1 font-normal text-gray-500 mb-2">
-          <span className="md:block hidden">
-            <Info className="h-4 w-4 text-gray-600" />
+        <h1 className="text-sm italic flex md:justify-center md:items-center gap-1 font-normal text-gray-500 mb-2">
+          <span className="">
+            <Info className="h-4 w-4 hidden md:block text-gray-600" />
           </span>
           {fullState?.board?.currentBoard?.description}
         </h1>
       </div>
-      <p className="text-gray-400 text-sm w-full md:w-fit flex md:justify-center items-center gap-1">
+      <p className="text-gray-400 text-sm w-full md:w-fit flex md:justify-center items-start gap-1">
         <span>
           <CommandIcon className="h-4 w-4 text-gray-600" />
         </span>
@@ -290,7 +290,7 @@ const KanbanDashboard = () => {
 
   const renderEmptyState = () => (
     <div className="text-center py-16">
-      <div className="max-w-md mx-auto">
+      <div className="w-full md:max-w-md mx-auto">
         <div className="mb-6">
           <EmptyStateIcon />
         </div>
@@ -380,8 +380,8 @@ const KanbanDashboard = () => {
   const isLoading = columnsLoading || boardStatus === "loading";
 
   return (
-    <div className="min-h-screen min-w-[90%] flex bg-gradient-to-br absolute from-zinc-50 via-gray-50 to-white md:p-6 p-3 overflow-hidden">
-      <div className="max-w-full mx-auto">
+    <div className="min-h-screen min-w-[90%] flex bg-gradient-to-br from-zinc-50 via-gray-50 to-white p-6 overflow-hidden">
+      <div className="w-full mx-auto">
         {renderHeader()}
 
         {isLoading ? (

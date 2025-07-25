@@ -5,11 +5,10 @@ import {
   User,
   Calendar,
   MenuIcon,
-  Kanban,
   HeartHandshake,
 } from "lucide-react";
 
-function Sidebar({ selectedIcon, setSelectedIcon }) {
+function Sidebar({ selectedIcon, setSelectedIcon, isexp }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,6 +16,7 @@ function Sidebar({ selectedIcon, setSelectedIcon }) {
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
+    isexp((collap) => !collap);
   };
 
   const getCurrentBoardId = () => {
@@ -89,7 +89,7 @@ function Sidebar({ selectedIcon, setSelectedIcon }) {
 
   return (
     <div
-      className={`min-h-screen bg-white text-gray-800 p-4 shadow-md transition-all duration-300 ${
+      className={`min-h-screen bg-white select-none text-gray-800 p-4 shadow-md transition-all duration-300 ${
         isCollapsed ? "w-20" : "w-60"
       }`}
     >

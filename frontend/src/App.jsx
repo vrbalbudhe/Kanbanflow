@@ -7,7 +7,6 @@ import BoardCreationPage from "./pages/BoardCreationPage";
 import { ProtectedLayout } from "./layouts/ProtectedLayout";
 import { CreationLayout } from "./layouts/CreationLayout";
 import UserProfile from "./pages/UserPages/UserProfile";
-import UserSettings from "./pages/UserPages/UserSettings";
 import KanbanDashboard from "./pages/KanbanDashboard";
 import MembersPage from "./pages/KanbanPages/MembersPage";
 import DiscussionPage from "./pages/KanbanPages/DiscussionPage";
@@ -38,10 +37,6 @@ function App() {
         {
           path: "profile",
           element: <UserProfile />,
-        },
-        {
-          path: "settings",
-          element: <UserSettings />,
         },
       ],
     },

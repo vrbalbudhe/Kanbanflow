@@ -217,8 +217,8 @@ function CalendarPage() {
 
   return (
     <div className="min-h-screen ">
-      <div className="w-full md:min-w-7xl mx-auto p-3">
-        <div className="bg-white rounded-md shadow-md overflow-hidden">
+      <div className="w-full md:min-w-7xl mx-auto">
+        <div className="bg-white overflow-hidden">
           <div className="bg-gradient-to-r text-gray-700 p-6">
             <div className="w-full flex md:flex-row flex-col items-start gap-2 md:items-center justify-between">
               <div>

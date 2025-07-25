@@ -15,6 +15,20 @@ const AddParticipants = asyncHandler(async (req, res) => {
                     success: false
                });
           }
+          const existingParticipant = await prisma.participant.findFirst({
+               where: {
+                    email,
+                    boardId,
+               },
+          });
+
+          if (existingParticipant) {
+               return res.status(409).json({
+                    message: "Participant already added to this board",
+                    success: false,
+               });
+          }
+
           const NewParticipant = await prisma.participant.create({
                data: {
                     email,
@@ -39,7 +53,11 @@ const AddParticipants = asyncHandler(async (req, res) => {
           });
 
      } catch (error) {
-          console.log(error)
+          console.error(error);
+          return res.status(500).json({
+               message: "Server error while creating participant",
+               success: false,
+          });
      }
 });
 

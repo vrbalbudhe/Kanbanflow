@@ -158,11 +158,6 @@ export function Navbar() {
               text="Profile"
               link="/secure/profile"
             />
-            <ProfileMenuItem
-              icon={<Settings className="h-4 w-4" />}
-              text="Settings"
-              link="/secure/settings"
-            />
             {user && (
               <>
                 <div className="border-t border-gray-100 my-1"></div>
@@ -285,7 +280,7 @@ export function Navbar() {
   );
 
   return (
-    <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm sticky top-0 z-40">
+    <nav className="bg-white/95 select-none backdrop-blur-md border-b border-gray-200/50 shadow-sm sticky top-0 z-40">
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">

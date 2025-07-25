@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Play,
@@ -8,7 +9,6 @@ import {
   Target,
 } from "lucide-react";
 
-// Feature data
 const features = [
   {
     icon: CheckCircle,
@@ -32,7 +32,6 @@ const features = [
   },
 ];
 
-// Animated background particles component
 const BackgroundParticles = () => {
   const [particles, setParticles] = useState([]);
 
@@ -66,7 +65,6 @@ const BackgroundParticles = () => {
   );
 };
 
-// Call-to-action button component
 const CTAButton = ({
   children,
   variant = "primary",
@@ -92,7 +90,6 @@ const CTAButton = ({
   );
 };
 
-// Feature card component
 const FeatureCard = ({ icon: Icon, title, description, delay = 0 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -118,8 +115,8 @@ const FeatureCard = ({ icon: Icon, title, description, delay = 0 }) => {
   );
 };
 
-// Main hero section component
 const HeroSection = () => {
+  const navigate = useNavigate();
   const [currentWord, setCurrentWord] = useState(0);
   const words = ["Productivity", "Collaboration", "Focus", "Success"];
 
@@ -131,11 +128,11 @@ const HeroSection = () => {
   }, []);
 
   const handleGetStarted = () => {
-    console.log("Get Started clicked");
+    navigate("/secure/board");
   };
 
   const handleWatchDemo = () => {
-    console.log("Watch Demo clicked");
+    window.open("https://vrbresume.vercel.app/projects/KBFPPJWD", "_blank");
   };
 
   return (

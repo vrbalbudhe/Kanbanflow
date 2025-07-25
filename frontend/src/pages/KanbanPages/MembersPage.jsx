@@ -7,23 +7,11 @@ import { UserShowcase } from "../../components/members/UserShowcase";
 function MembersPage() {
   const params = useParams();
   const boardId = params?.id;
-  const dispatch = useDispatch();
   const fullState = useSelector((state) => state);
-
-  const columnState = useSelector((state) => state.column || {});
   const boardState = useSelector((state) => state.boards || {});
-  const kanbanState = useSelector((state) => state.kanban || {});
-  const taskState = useSelector((state) => state.task || {});
-
-  const {
-    columnList = [],
-    loading: columnsLoading = false,
-    error: columnsError = null,
-  } = columnState;
 
   const {
     currentBoard = null,
-    boardList = [],
     status: boardStatus = "idle",
     error: boardError = null,
   } = boardState;

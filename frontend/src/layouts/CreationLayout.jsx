@@ -6,6 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 export const CreationLayout = () => {
   const { user } = useContext(AuthContext);
   const [selectedIcon, setSelectedIcon] = useState();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   if (!user) return <Navigate to="/" />;
 
@@ -15,14 +16,17 @@ export const CreationLayout = () => {
         <Navbar />
       </div>
       <div className="flex flex-1 min-h-0 overflow-hidden">
-        <div className="hidden md:block">
+        <div className="hidden md:block fixed">
           <Sidebar
             selectedIcon={selectedIcon}
             setSelectedIcon={setSelectedIcon}
+            isexp={setIsExpanded}
           />
         </div>
 
-        <div className="flex-1 overflow-x-auto overflow-y-auto h-full">
+        <div
+          className={`flex-1 overflow-x-auto ${!isExpanded ? "md:ml-56" : "md:ml-16"} overflow-y-auto h-full`}
+        >
           <Outlet />
         </div>
       </div>

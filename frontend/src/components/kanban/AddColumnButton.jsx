@@ -84,7 +84,7 @@ const AddColumnButton = () => {
   return (
     <button
       onClick={() => setShowForm(true)}
-      className="w-80 h-24 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 flex flex-col items-center justify-center gap-2 bg-white/50 backdrop-blur-sm"
+      className="w-full md:w-[450px] h-24 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 flex flex-col items-center justify-center gap-2 bg-white/50 backdrop-blur-sm"
     >
       <svg
         className="w-8 h-8"

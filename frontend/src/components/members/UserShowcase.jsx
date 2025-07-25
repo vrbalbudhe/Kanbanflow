@@ -21,6 +21,7 @@ import {
   ChevronDown,
   Calendar,
   X,
+  UserCircleIcon,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -31,6 +32,7 @@ import {
   updParticipants,
 } from "../../features/participants/participantSlice";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 export const UserShowcase = () => {
   const { user, setId, setBoardId, access } = useContext(AuthContext);
@@ -46,7 +48,6 @@ export const UserShowcase = () => {
   const [filterPermission, setFilterPermission] = useState("all");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [showDropdown, setShowDropdown] = useState(null);
   const [newUser, setNewUser] = useState({
     name: "",
@@ -95,7 +96,7 @@ export const UserShowcase = () => {
     }
   }, [newUser.email, allUsers, participantList]);
 
-  const getPermissionIcon = (permission) => {
+  const getPermissionIcon = (currentPermission, permission) => {
     switch (permission) {
       case "admin":
         return <Crown className="w-4 h-4 text-yellow-600" />;
@@ -198,12 +199,13 @@ export const UserShowcase = () => {
         setAllUsers(data?.user || []);
       }
     } catch (error) {
-      console.error("Error fetching users:", error);
+      toast("Error fetching users");
     }
   };
 
   const handleDeleteUser = (userId) => {
     setShowDropdown(null);
+    toast.success("User Deleted Successfully!");
   };
 
   const handleEditUser = (participant) => {
@@ -247,14 +249,10 @@ export const UserShowcase = () => {
 
       // Refresh participants list
       dispatch(getParticipants({ boardId: id }));
+      toast.success("User Permissions Updated Successfully!");
     } catch (error) {
-      console.error("Error updating participant:", error);
-      alert("Failed to update participant. Please try again.");
+      toast.error("Error updating participant:", error);
     }
-  };
-
-  const handleEmailChange = (value) => {
-    setNewUser((prev) => ({ ...prev, email: value }));
   };
 
   const handleAddUser = async (e) => {
@@ -285,9 +283,9 @@ export const UserShowcase = () => {
 
       setShowUserSuggestions(false);
       dispatch(getParticipants({ boardId: id }));
+      toast.success("User Added Successfully!");
     } catch (error) {
-      console.error("Error adding participant:", error);
-      alert("Failed to add participant. Please try again.");
+      toast.error("Error adding participant:", error);
     }
   };
 
@@ -310,12 +308,16 @@ export const UserShowcase = () => {
     const workers = participantList.filter(
       (p) => p.userAccess === "worker"
     ).length;
+    const guests = participantList.filter(
+      (p) => p.userAccess === "guest"
+    ).length;
 
-    return { totalMembers, onlineMembers, admins, workers };
+    return { totalMembers, onlineMembers, admins, workers, guests };
   };
 
   const renderStatsCards = () => {
-    const { totalMembers, onlineMembers, admins, workers } = getStatsData();
+    const { totalMembers, onlineMembers, admins, workers, guests } =
+      getStatsData();
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -344,6 +346,15 @@ export const UserShowcase = () => {
               <p className="text-2xl font-bold text-green-600">{workers}</p>
             </div>
             <UserCheck className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Guests</p>
+              <p className="text-2xl font-bold text-sky-600">{guests || 0}</p>
+            </div>
+            <UserCircleIcon className="w-8 h-8 text-green-600" />
           </div>
         </div>
       </div>
@@ -481,7 +492,7 @@ export const UserShowcase = () => {
               </button>
             )}
             {showDropdown === participant.id && (
-              <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-10 min-w-32">
+              <div className=" absolute right-2 top-0 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-10 min-w-32 mr-10">
                 <button
                   onClick={() => handleEditUser(participant)}
                   className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2"
@@ -587,7 +598,7 @@ export const UserShowcase = () => {
               >
                 <option value="guest">Guest</option>
                 <option value="worker">Worker</option>
-                <option value="admin">Admin</option>
+                {/* <option value="admin">Admin</option> */}
               </select>
             </div>
             <div>
@@ -601,8 +612,12 @@ export const UserShowcase = () => {
                 }
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
+                {newUser?.userAccess !== "guest" && (
+                  <>
+                    <option value="editor">Editor</option>
+                  </>
+                )}
                 <option value="viewer">Viewer</option>
-                <option value="editor">Editor</option>
               </select>
             </div>
             <div className="flex gap-2 pt-4">
@@ -671,9 +686,9 @@ export const UserShowcase = () => {
                 }
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
+                <option value="admin">Admin</option>
                 <option value="guest">Guest</option>
                 <option value="worker">Worker</option>
-                <option value="admin">Admin</option>
               </select>
             </div>
             <div>
@@ -687,9 +702,14 @@ export const UserShowcase = () => {
                 }
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="viewer">Viewer</option>
-                <option value="editor">Editor</option>
-                <option value="admin">Admin</option>
+                {editUser?.userAccess != "guest" && (
+                  <option value="editor">Editor</option>
+                )}
+                {editUser?.userAccess != "admin" && (
+                  <>
+                    <option value="viewer">Viewer</option>
+                  </>
+                )}
               </select>
             </div>
             <div className="flex gap-2 pt-4">

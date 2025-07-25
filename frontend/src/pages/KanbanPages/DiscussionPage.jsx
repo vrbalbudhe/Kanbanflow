@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllChatsByBoardId } from "../../features/chats/chatSlice";
 import { CommandIcon, Info } from "lucide-react";
 
-// Import your async thunk
-
 function DiscussionPage() {
   const navigate = useNavigate();
   const params = useParams();
@@ -22,7 +20,7 @@ function DiscussionPage() {
 
   if (loading) {
     return (
-      <div className="p-4">
+      <div className="p-6">
         <h1 className="text-2xl font-bold mb-4">Discussion Board {id}</h1>
         <div className="flex items-center justify-center">
           <div className="text-lg">Loading chats...</div>
@@ -68,7 +66,7 @@ function DiscussionPage() {
   );
 
   return (
-    <div className="p-4 w-full">
+    <div className="p-6 w-full">
       {renderHeader()}
 
       {AllChats && AllChats.length > 0 ? (

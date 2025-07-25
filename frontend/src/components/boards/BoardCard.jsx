@@ -46,7 +46,7 @@ const BoardCard = ({ board, index, backgroundImages, onDelete }) => {
         </div>
         <button
           onClick={() => navigate(`/kanban/${board?.id}/home`)}
-          className="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors"
+          className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium transition-colors"
         >
           Open Board
         </button>

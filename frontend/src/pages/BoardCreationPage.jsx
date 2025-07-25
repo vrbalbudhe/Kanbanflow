@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import CollaborateSection from "../components/boards/CollaborateSection";
+import { addParticipants } from "../features/participants/participantSlice";
 
 const BoardCreationPage = () => {
   const dispatch = useDispatch();
@@ -40,15 +41,24 @@ const BoardCreationPage = () => {
 
   const handleSubmit = async () => {
     if (formData.title.trim()) {
-      const resultAction = dispatch(
+      const resultAction = await dispatch(
         addBoard({
           title: formData.title,
           description: formData.description,
-          owner: user?.email || "",
+          owner: user?.email,
           status: formData.status,
           userId: user?.id,
         })
-      );
+      ).unwrap();
+      console.log("check - > ", resultAction?.id);
+      await dispatch(
+        addParticipants({
+          boardId: resultAction?.id,
+          email: user?.email,
+          userAccess: "admin",
+          permission: "editor",
+        })
+      ).unwrap();
       dispatch(fetchBoards(user.id));
 
       setFormData({ title: "", description: "", status: "active" });

@@ -8,16 +8,13 @@ import { BadgeAlert } from "lucide-react";
 
 function CollaborateSection() {
   const { user } = useContext(AuthContext);
-  const [collaborators, setCollaborators] = useState();
   const dispatch = useDispatch();
   const boards = useSelector((state) => state?.board?.allBoards);
-  //   console.log("boards:", boards);
 
-  const collaborateBoards = boards.filter((board) =>
-    board?.participants?.some(
-      (participant) => participant?.email === user?.email
-    )
+  const collaborateBoards = boards.filter(
+    (board) => board?.owner !== user?.email
   );
+
   const handleDeleteBoard = (id) => {
     if (window.confirm("Do You Want To Delete The Board?")) {
       dispatch(deleteBoard(id));
