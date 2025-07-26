@@ -242,32 +242,12 @@ function LoginForm({ setModal }) {
             <div className="flex-1 border-t border-gray-200"></div>
           </div>
 
-          {/* Social Login Buttons */}
-          <div className="grid grid-cols-2 gap-4">
-            <button
-              type="button"
-              onClick={() => handleSocialLogin("Google")}
-              className="flex items-center justify-center space-x-2 py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-            >
-              <Chrome className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">Google</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSocialLogin("GitHub")}
-              className="flex items-center justify-center space-x-2 py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
-            >
-              <Github className="w-5 h-5 text-gray-600" />
-              <span className="text-sm font-medium text-gray-700">GitHub</span>
-            </button>
-          </div>
-
           {/* Sign Up Link */}
           <div className="text-center mt-6">
             <p className="text-gray-600">
               Don't have an account?{" "}
               <a
-                href="#"
+                href="/signup"
                 className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
               >
                 Sign up for free

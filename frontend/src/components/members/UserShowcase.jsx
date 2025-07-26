@@ -30,6 +30,7 @@ import {
   getParticipants,
   fetchBoardByBoardId,
   updParticipants,
+  delParticipants,
 } from "../../features/participants/participantSlice";
 import { AuthContext } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
@@ -203,9 +204,20 @@ export const UserShowcase = () => {
     }
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = async (userId) => {
     setShowDropdown(null);
-    toast.success("User Deleted Successfully!");
+    try {
+      if (!userId) {
+        toast.error("Unable to fetch the userId Id");
+        return;
+      }
+      dispatch(delParticipants({
+        participantId: userId,
+      }))
+      toast.success("User Deleted Successfully!");
+    } catch (error) {
+      toast.error("Unable to delete the Participant")
+    }
   };
 
   const handleEditUser = (participant) => {
@@ -247,7 +259,6 @@ export const UserShowcase = () => {
         userAccess: "guest",
       });
 
-      // Refresh participants list
       dispatch(getParticipants({ boardId: id }));
       toast.success("User Permissions Updated Successfully!");
     } catch (error) {
@@ -419,7 +430,7 @@ export const UserShowcase = () => {
     return (
       <div
         key={participant.id || participant._id}
-        className="w-full flex md:flex-row flex-col items-center justify-between gap-4 p-4 border-b border-gray-200 hover:bg-gray-50 transition"
+        className="w-full select-none flex md:flex-row flex-col items-center justify-between gap-4 p-4 border-b border-gray-200 hover:bg-gray-50 transition"
       >
         <div className="w-full flex items-center gap-4 min-w-0">
           <div className="relative">
@@ -491,7 +502,7 @@ export const UserShowcase = () => {
                 <MoreVertical className="w-4 h-4 text-gray-500" />
               </button>
             )}
-            {showDropdown === participant.id && (
+            {showDropdown === participant?.id && (
               <div className=" absolute right-2 top-0 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-10 min-w-32 mr-10">
                 <button
                   onClick={() => handleEditUser(participant)}
@@ -500,13 +511,16 @@ export const UserShowcase = () => {
                   <Edit3 className="w-3 h-3" />
                   Edit
                 </button>
-                <button
-                  onClick={() => handleDeleteUser(participant.id)}
-                  className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
-                >
-                  <Trash2 className="w-3 h-3" />
-                  Remove
-                </button>
+                {
+                  participant?.userAccess !== "admin" &&
+                  <button
+                    onClick={() => handleDeleteUser(participant?.id)}
+                    className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    Remove
+                  </button>
+                }
               </div>
             )}
           </div>

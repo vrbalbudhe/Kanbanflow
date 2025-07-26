@@ -31,6 +31,13 @@ export const updParticipants = createAsyncThunk("/participant/updParticipants", 
      return response?.data?.participant;
 })
 
+export const delParticipants = createAsyncThunk("", async ({ participantId, thunkAPI }) => {
+     if (!participantId) return thunkAPI.rejectWithValue("Participant Id is Necessary");
+
+     await axios.delete(`${import.meta.env.VITE_API_URL}/api/participant/del/${participantId}`, { withCredentials: true });
+     return participantId;
+})
+
 export const fetchBoardByBoardId = createAsyncThunk(
      "participant/fetchBoardByBoardId",
      async (id, thunkAPI) => {
@@ -95,6 +102,19 @@ const participantSlice = createSlice({
                     state.error = null;
                })
                .addCase(getParticipants.rejected, (state, action) => {
+                    state.status = "failed";
+                    state.error = action.payload;
+               })
+               .addCase(delParticipants.pending, (state) => {
+                    state.status = "loading";
+                    state.error = null;
+               })
+               .addCase(delParticipants.fulfilled, (state, action) => {
+                    state.status = "succeeded";
+                    state.participantList = state.participantList.filter((participant) => participant.id !== action.payload)
+                    state.error = null;
+               })
+               .addCase(delParticipants.rejected, (state, action) => {
                     state.status = "failed";
                     state.error = action.payload;
                })

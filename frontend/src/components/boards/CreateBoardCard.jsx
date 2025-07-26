@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 const CreateBoardCard = ({ onClick }) => (
   <div
     onClick={onClick}
-    className="bg-white border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center min-h-[240px] cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300 group"
+    className="bg-white md:ml-2 border-2 border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center min-h-[240px] cursor-pointer hover:border-blue-400 hover:bg-blue-50/30 transition-all duration-300 group"
   >
     <div className="w-16 h-16 bg-gray-100 group-hover:bg-blue-100 rounded-full flex items-center justify-center mb-4 transition-colors">
       <Plus size={24} className="text-gray-400 group-hover:text-blue-600" />

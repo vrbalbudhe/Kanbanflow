@@ -13,6 +13,7 @@ import DiscussionPage from "./pages/KanbanPages/DiscussionPage";
 import CalenderPage from "./pages/KanbanPages/CalenderPage";
 import ChatPage from "./pages/KanbanPages/ChatPage";
 import ArchivePage from "./pages/KanbanPages/ArchivePage";
+import SignupForm from "./components/auth/SignupForm";
 
 function App() {
   const router = createBrowserRouter([
@@ -23,6 +24,10 @@ function App() {
         {
           path: "/",
           element: <Homepage />,
+        },
+        {
+          path: "/signup",
+          element: <SignupForm />,
         },
       ],
     },

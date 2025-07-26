@@ -4,10 +4,6 @@ const asyncHandler = require("express-async-handler");
 const AddParticipants = asyncHandler(async (req, res) => {
      const { boardId } = req.params;
      const { email, permission, userAccess } = req.body;
-     console.log(boardId)
-     console.log(email)
-     console.log(permission)
-     console.log(userAccess)
      try {
           if (!boardId) {
                return res.status(400).json({

@@ -8,7 +8,7 @@ const BoardCard = ({ board, index, backgroundImages, onDelete }) => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   return (
-    <div className="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200">
+    <div className="group w-full md:w-80 relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-200">
       <div
         className="h-20 relative"
         style={{

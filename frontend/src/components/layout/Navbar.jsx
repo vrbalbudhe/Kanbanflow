@@ -20,24 +20,6 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useContext } from "react";
 import { toast } from "react-toastify";
 
-const MobileMenuItem = ({ icon, text, active, href_link }) => {
-  const navigate = useNavigate();
-
-  return (
-    <button
-      onClick={() => navigate(href_link)}
-      className={`w-full flex items-center pl-4 pr-4 py-3 border-l-4 text-base font-medium transition-all duration-200 ${
-        active
-          ? "bg-blue-50 border-blue-500 text-blue-700"
-          : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300"
-      }`}
-    >
-      <span className="mr-3">{icon}</span>
-      {text}
-    </button>
-  );
-};
-
 export function Navbar() {
   const { user, setUser } = useContext(AuthContext);
   const { id } = useParams();
@@ -53,6 +35,30 @@ export function Navbar() {
   const toggleProfile = () => setIsProfileOpen(!isProfileOpen);
   const openModal = () => setModal(true);
   const closeModal = () => setModal(false);
+
+  const MobileMenuItem = ({ icon, text, href_link }) => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const isActive = location.pathname === href_link;
+    const handleClick = () => {
+      navigate(href_link);
+      if (toggleMenu) toggleMenu();
+    };
+
+    return (
+      <button
+        onClick={handleClick}
+        className={`w-full flex items-center pl-4 pr-4 py-3 border-l-4 text-base font-medium transition-all duration-200 ${isActive
+          ? "bg-blue-50 border-blue-500 text-blue-700"
+          : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300"
+          }`}
+      >
+        <span className="mr-3">{icon}</span>
+        {text}
+      </button>
+    );
+  };
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -185,11 +191,10 @@ export function Navbar() {
   const ProfileMenuItem = ({ icon, text, danger = false, link }) => (
     <button
       onClick={() => navigate(link)}
-      className={`flex items-center w-full px-4 py-2.5 text-sm transition-colors ${
-        danger
-          ? "text-red-600 hover:bg-red-50 hover:text-red-700"
-          : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-      }`}
+      className={`flex items-center w-full px-4 py-2.5 text-sm transition-colors ${danger
+        ? "text-red-600 hover:bg-red-50 hover:text-red-700"
+        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+        }`}
     >
       <span className="mr-3">{icon}</span>
       {text}
@@ -220,7 +225,6 @@ export function Navbar() {
         <MobileMenuItem
           icon={<Home className="h-5 w-5" />}
           text="Dashboard"
-          active
           href_link={`/kanban/${currentBoardId}/home`}
         />
         <MobileMenuItem
@@ -244,24 +248,6 @@ export function Navbar() {
           href_link={`/kanban/${currentBoardId}/archive`}
         />
       </div>
-      <div className="pt-4 pb-3 border-t border-gray-200">
-        <div className="px-3">
-          <MobileSearchBar />
-        </div>
-      </div>
-    </div>
-  );
-
-  const MobileSearchBar = () => (
-    <div className="relative">
-      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <Search className="h-5 w-5 text-gray-400" />
-      </div>
-      <input
-        type="text"
-        placeholder="Search..."
-        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-      />
     </div>
   );
 
@@ -287,7 +273,11 @@ export function Navbar() {
             <Logo />
           </div>
 
-          <div className="flex items-center md:space-x-4">
+          <div className="flex items-center md:space-x-4 gap-2">
+            {
+              !user &&
+              <button onClick={() => navigate("/signup")} className="px-6 py-2 bg-gradient-to-l from-blue-600 via-blue-500 to-purple-400 text-white rounded-xl">Register</button>
+            }
             <LoginButton />
             {user && <ProfileDropdown />}
             <MobileMenuButton />

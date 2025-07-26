@@ -11,9 +11,15 @@ function CollaborateSection() {
   const dispatch = useDispatch();
   const boards = useSelector((state) => state?.board?.allBoards);
 
-  const collaborateBoards = boards.filter(
-    (board) => board?.owner !== user?.email
-  );
+  const combinedBoards = boards.filter((board) => {
+    const isNotOwner = board?.owner !== user?.email;
+    const isUserParticipant = board?.participants?.some(
+      (participant) => participant?.email === user?.email
+    );
+
+    return isNotOwner && isUserParticipant;
+  });
+  console.log(combinedBoards)
 
   const handleDeleteBoard = (id) => {
     if (window.confirm("Do You Want To Delete The Board?")) {
@@ -56,10 +62,10 @@ function CollaborateSection() {
   return (
     <div>
       <CreatePageNavbar />
-      {collaborateBoards.length > 0 && (
+      {combinedBoards.length > 0 && (
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {collaborateBoards.map((board, index) => (
+          <div className="w-full flex flex-wrap justify-start items-start gap-6">
+            {combinedBoards.map((board, index) => (
               <BoardCard
                 key={index}
                 board={board}
@@ -71,7 +77,7 @@ function CollaborateSection() {
           </div>
         </div>
       )}
-      {collaborateBoards.length === 0 && HandleNoCollaborationBoards()}
+      {combinedBoards.length === 0 && HandleNoCollaborationBoards()}
     </div>
   );
 }
