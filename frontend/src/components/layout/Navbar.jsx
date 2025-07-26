@@ -49,10 +49,11 @@ export function Navbar() {
     return (
       <button
         onClick={handleClick}
-        className={`w-full flex items-center pl-4 pr-4 py-3 border-l-4 text-base font-medium transition-all duration-200 ${isActive
-          ? "bg-blue-50 border-blue-500 text-blue-700"
-          : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300"
-          }`}
+        className={`w-full flex items-center pl-4 pr-4 py-3 border-l-4 text-base font-medium transition-all duration-200 ${
+          isActive
+            ? "bg-blue-50 border-blue-500 text-blue-700"
+            : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50 hover:border-gray-300"
+        }`}
       >
         <span className="mr-3">{icon}</span>
         {text}
@@ -123,10 +124,9 @@ export function Navbar() {
       </button>
     ) : (
       <button
-        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-lg text-white px-6 py-2.5 rounded-xl text-sm font-semibold flex items-center transition-all duration-200 transform hover:scale-105"
+        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:shadow-lg text-white px-2 py-2.5 rounded-xl text-sm font-semibold flex items-center transition-all duration-200 transform hover:scale-105"
         onClick={openModal}
       >
-        <LogIn className="h-4 w-4 mr-2" />
         Sign In
       </button>
     );
@@ -191,10 +191,11 @@ export function Navbar() {
   const ProfileMenuItem = ({ icon, text, danger = false, link }) => (
     <button
       onClick={() => navigate(link)}
-      className={`flex items-center w-full px-4 py-2.5 text-sm transition-colors ${danger
-        ? "text-red-600 hover:bg-red-50 hover:text-red-700"
-        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-        }`}
+      className={`flex items-center w-full px-4 py-2.5 text-sm transition-colors ${
+        danger
+          ? "text-red-600 hover:bg-red-50 hover:text-red-700"
+          : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+      }`}
     >
       <span className="mr-3">{icon}</span>
       {text}
@@ -274,10 +275,14 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center md:space-x-4 gap-2">
-            {
-              !user &&
-              <button onClick={() => navigate("/signup")} className="px-6 py-2 bg-gradient-to-l from-blue-600 via-blue-500 to-purple-400 text-white rounded-xl">Register</button>
-            }
+            {!user && (
+              <button
+                onClick={() => navigate("/signup")}
+                className="px-2 py-2 bg-gradient-to-l from-blue-600 via-blue-500 to-purple-400 text-white rounded-xl"
+              >
+                Register
+              </button>
+            )}
             <LoginButton />
             {user && <ProfileDropdown />}
             <MobileMenuButton />
